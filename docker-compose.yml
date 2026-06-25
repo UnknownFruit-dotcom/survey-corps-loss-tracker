@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgres-scouts
+    environment:
+      POSTGRES_DB: Scouts
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "Pswd-(19AA57"
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
