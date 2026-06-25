@@ -1,0 +1,7 @@
+ALTER TABLE users
+    ALTER COLUMN created_at
+        SET DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE users
+    ALTER COLUMN role
+        SET DEFAULT 'ADMIN';
