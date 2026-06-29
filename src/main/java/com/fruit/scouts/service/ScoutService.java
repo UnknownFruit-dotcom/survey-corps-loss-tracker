@@ -7,7 +7,9 @@ import com.fruit.scouts.dto.request.ScoutUpdateRequest;
 import com.fruit.scouts.dto.response.ScoutResponse;
 import com.fruit.scouts.exception.ResourceNotFoundException;
 import com.fruit.scouts.mapper.ScoutMapper;
+import com.fruit.scouts.model.Rank;
 import com.fruit.scouts.model.Scout;
+import com.fruit.scouts.model.ScoutStatus;
 import com.fruit.scouts.model.Team;
 import com.fruit.scouts.repository.ScoutRepository;
 import com.fruit.scouts.repository.TeamRepository;
@@ -27,7 +29,13 @@ public class ScoutService {
 
     @Transactional
     public ScoutResponse createScout(ScoutCreationRequest request) {
+        var rank = request.rank() != null ? request.rank() : Rank.MEMBER;
+        var status = request.status() != null ? request.status() : ScoutStatus.ACTIVE;
+
         var scout = scoutMapper.toEntity(request);
+
+        scout.setRank(rank);
+        scout.setStatus(status);
 
         if (request.teamId() != null) {
             Team team = teamRepository.findById(request.teamId())

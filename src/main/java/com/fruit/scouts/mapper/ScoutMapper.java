@@ -14,6 +14,8 @@ public interface ScoutMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "team", ignore = true)
+    @Mapping(target = "rank", ignore = true)
+    @Mapping(target = "status", ignore = true)
     @Mapping(target = "joinedAt", source = "joinedAt")
     Scout toEntity(ScoutCreationRequest request);
 
