@@ -35,8 +35,6 @@ public class OperationResponse {
         response.setStatus(operation.getStatus().toString());
         response.setNotes(operation.getNotes());
 
-//        response.setStatus(scout.getStatus() != null ? scout.getStatus().name() : null);
-
         return response;
     }
 
