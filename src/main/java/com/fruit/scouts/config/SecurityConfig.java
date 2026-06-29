@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/teams/**").permitAll()
                         .requestMatchers("/api/scouts/**").permitAll()
+                        .requestMatchers("/api/operations/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
