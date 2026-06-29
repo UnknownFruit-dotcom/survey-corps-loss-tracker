@@ -6,7 +6,7 @@ import com.fruit.scouts.model.ScoutStatus;
 
 import java.time.LocalDate;
 
-public record ScoutCreationRequest(
+public record ScoutUpdateRequest(
         String name,
         Long teamId,
         LocalDate joinedAt,
@@ -15,4 +15,5 @@ public record ScoutCreationRequest(
         Integer totalMissions,
         ScoutStatus status,
         String notes
-) { }
+) {
+}

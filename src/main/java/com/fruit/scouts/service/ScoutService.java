@@ -1,6 +1,9 @@
 package com.fruit.scouts.service;
 
 import com.fruit.scouts.dto.request.ScoutCreationRequest;
+import com.fruit.scouts.dto.request.ScoutPositionUpdateRequest;
+import com.fruit.scouts.dto.request.ScoutStatusUpdateRequest;
+import com.fruit.scouts.dto.request.ScoutUpdateRequest;
 import com.fruit.scouts.dto.response.ScoutResponse;
 import com.fruit.scouts.exception.ResourceNotFoundException;
 import com.fruit.scouts.mapper.ScoutMapper;
@@ -54,5 +57,40 @@ public class ScoutService {
                 .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
 
         scoutRepository.delete(scout);
+    }
+
+    @Transactional
+    public ScoutResponse updateScout(Long id, ScoutUpdateRequest request) {
+        Scout scout = scoutRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
+
+        scoutMapper.updateScoutFromDto(request, scout);
+
+        if (request.teamId() != null && !scout.getTeam().getId().equals(request.teamId())) {
+            Team newTeam = teamRepository.findById(request.teamId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Team not found with id: " + request.teamId()));
+
+            scout.setTeam(newTeam);
+        }
+
+        return ScoutResponse.from(scoutRepository.save(scout));
+    }
+
+    @Transactional
+    public ScoutResponse changeScoutStatus(Long id, ScoutStatusUpdateRequest request) {
+        Scout scout = scoutRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
+
+        scout.setStatus(request.status());
+        return ScoutResponse.from(scoutRepository.save(scout));
+    }
+
+    @Transactional
+    public ScoutResponse changeScoutPosition(Long id, ScoutPositionUpdateRequest request) {
+        Scout scout = scoutRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
+
+        scout.setPosition(request.position());
+        return ScoutResponse.from(scoutRepository.save(scout));
     }
 }
