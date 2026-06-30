@@ -82,7 +82,7 @@ public class ScoutService {
     }
 
     @Transactional
-    public ScoutResponse changeScoutStatus(Long id, ScoutStatusUpdateRequest request) {
+    public ScoutResponse updateStatus(Long id, ScoutStatusUpdateRequest request) {
         Scout scout = scoutRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
 
@@ -91,7 +91,7 @@ public class ScoutService {
     }
 
     @Transactional
-    public ScoutResponse changeScoutPosition(Long id, ScoutPositionUpdateRequest request) {
+    public ScoutResponse updatePosition(Long id, ScoutPositionUpdateRequest request) {
         Scout scout = scoutRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
 

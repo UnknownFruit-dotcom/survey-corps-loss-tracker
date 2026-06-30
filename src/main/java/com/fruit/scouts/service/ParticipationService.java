@@ -78,7 +78,7 @@ public class ParticipationService {
     }
 
     @Transactional
-    public ParticipationResponse changeParticipationNotes(Long id, ParticipationNotesUpdateRequest request) {
+    public ParticipationResponse updateNotes(Long id, ParticipationNotesUpdateRequest request) {
         Participation participation = participationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Participation not found with id: " + id));
 

@@ -47,13 +47,13 @@ public class ScoutController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ScoutResponse> changeScoutStatus(@PathVariable Long id, @RequestBody ScoutStatusUpdateRequest request) {
-        return ResponseEntity.ok(scoutService.changeScoutStatus(id, request));
+    public ResponseEntity<ScoutResponse> updateScoutStatus(@PathVariable Long id, @RequestBody ScoutStatusUpdateRequest request) {
+        return ResponseEntity.ok(scoutService.updateStatus(id, request));
     }
 
     @PatchMapping("/{id}/position")
-    public ResponseEntity<ScoutResponse> changeScoutPosition(@PathVariable Long id, @RequestBody ScoutPositionUpdateRequest request) {
-        return ResponseEntity.ok(scoutService.changeScoutPosition(id, request));
+    public ResponseEntity<ScoutResponse> updatePosition(@PathVariable Long id, @RequestBody ScoutPositionUpdateRequest request) {
+        return ResponseEntity.ok(scoutService.updatePosition(id, request));
     }
 
     @PatchMapping("/{id}/total-missions")

@@ -39,7 +39,7 @@ public class ParticipationController {
     }
 
     @PatchMapping("/{id}/notes")
-    public ResponseEntity<ParticipationResponse> changeParticipationNotes(@PathVariable Long id, @RequestBody ParticipationNotesUpdateRequest request) {
-        return ResponseEntity.ok(participationService.changeParticipationNotes(id, request));
+    public ResponseEntity<ParticipationResponse> updateNotes(@PathVariable Long id, @RequestBody ParticipationNotesUpdateRequest request) {
+        return ResponseEntity.ok(participationService.updateNotes(id, request));
     }
 }
