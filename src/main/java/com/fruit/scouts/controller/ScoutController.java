@@ -1,11 +1,7 @@
 package com.fruit.scouts.controller;
 
-import com.fruit.scouts.dto.request.ScoutCreationRequest;
-import com.fruit.scouts.dto.request.ScoutPositionUpdateRequest;
-import com.fruit.scouts.dto.request.ScoutStatusUpdateRequest;
-import com.fruit.scouts.dto.request.ScoutUpdateRequest;
+import com.fruit.scouts.dto.request.*;
 import com.fruit.scouts.dto.response.ScoutResponse;
-import com.fruit.scouts.model.ScoutStatus;
 import com.fruit.scouts.service.ScoutService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,5 +54,10 @@ public class ScoutController {
     @PatchMapping("/{id}/position")
     public ResponseEntity<ScoutResponse> changeScoutPosition(@PathVariable Long id, @RequestBody ScoutPositionUpdateRequest request) {
         return ResponseEntity.ok(scoutService.changeScoutPosition(id, request));
+    }
+
+    @PatchMapping("/{id}/total-missions")
+    public ResponseEntity<ScoutResponse> updateTotalMissions(@PathVariable Long id, @RequestBody ScoutTotalMissionsUpdateRequest request) {
+        return ResponseEntity.ok(scoutService.updateTotalMissions(id, request));
     }
 }

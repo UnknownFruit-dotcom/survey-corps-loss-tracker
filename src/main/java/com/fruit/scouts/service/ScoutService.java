@@ -1,9 +1,6 @@
 package com.fruit.scouts.service;
 
-import com.fruit.scouts.dto.request.ScoutCreationRequest;
-import com.fruit.scouts.dto.request.ScoutPositionUpdateRequest;
-import com.fruit.scouts.dto.request.ScoutStatusUpdateRequest;
-import com.fruit.scouts.dto.request.ScoutUpdateRequest;
+import com.fruit.scouts.dto.request.*;
 import com.fruit.scouts.dto.response.ScoutResponse;
 import com.fruit.scouts.exception.ResourceNotFoundException;
 import com.fruit.scouts.mapper.ScoutMapper;
@@ -99,6 +96,15 @@ public class ScoutService {
                 .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
 
         scout.setPosition(request.position());
+        return ScoutResponse.from(scoutRepository.save(scout));
+    }
+
+    @Transactional
+    public ScoutResponse updateTotalMissions(Long id, ScoutTotalMissionsUpdateRequest request) {
+        Scout scout = scoutRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + id));
+
+        scout.setTotalMissions(request.totalMissions());
         return ScoutResponse.from(scoutRepository.save(scout));
     }
 }
