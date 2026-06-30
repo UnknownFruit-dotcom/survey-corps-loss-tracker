@@ -1,6 +1,7 @@
 package com.fruit.scouts.controller;
 
 import com.fruit.scouts.dto.request.ParticipationCreationRequest;
+import com.fruit.scouts.dto.request.ParticipationNotesUpdateRequest;
 import com.fruit.scouts.dto.response.ParticipationResponse;
 import com.fruit.scouts.service.ParticipationService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,10 @@ public class ParticipationController {
     public ResponseEntity<Void> deleteParticipation(@PathVariable Long id) {
         participationService.deleteParticipation(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/notes")
+    public ResponseEntity<ParticipationResponse> changeParticipationNotes(@PathVariable Long id, @RequestBody ParticipationNotesUpdateRequest request) {
+        return ResponseEntity.ok(participationService.changeParticipationNotes(id, request));
     }
 }

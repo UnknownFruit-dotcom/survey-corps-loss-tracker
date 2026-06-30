@@ -1,12 +1,15 @@
 package com.fruit.scouts.service;
 
 import com.fruit.scouts.dto.request.ParticipationCreationRequest;
+import com.fruit.scouts.dto.request.ParticipationNotesUpdateRequest;
 import com.fruit.scouts.dto.response.ParticipationResponse;
 import com.fruit.scouts.exception.ResourceNotFoundException;
+import com.fruit.scouts.exception.UnavailableScoutException;
 import com.fruit.scouts.mapper.ParticipationMapper;
 import com.fruit.scouts.model.Operation;
 import com.fruit.scouts.model.Participation;
 import com.fruit.scouts.model.Scout;
+import com.fruit.scouts.model.ScoutStatus;
 import com.fruit.scouts.repository.OperationRepository;
 import com.fruit.scouts.repository.ParticipationRepository;
 import com.fruit.scouts.repository.ScoutRepository;
@@ -27,22 +30,26 @@ public class ParticipationService {
 
     @Transactional
     public ParticipationResponse createParticipation(ParticipationCreationRequest request) {
-        var participation = participationMapper.toEntity(request);
+        Operation operation = operationRepository.findById(request.operationId())
+                .orElseThrow(() -> new ResourceNotFoundException("Operation not found"));
 
-        if (request.scoutId() != null) {
-            Scout scout = scoutRepository.findById(request.scoutId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Scout not found with id: " + request.scoutId()));
-            participation.setScout(scout);
-        } else {
-            throw new IllegalArgumentException("ScoutId is required");
+        Scout scout = scoutRepository.findById(request.scoutId())
+                .orElseThrow(() -> new ResourceNotFoundException("Scout not found"));
+
+        if (scout.getStatus() != ScoutStatus.ACTIVE && scout.getStatus() != ScoutStatus.WOUNDED) {
+            throw new UnavailableScoutException("Scout is not available: " + scout.getStatus());
         }
 
-        if (request.operationId() != null) {
-            Operation operation = operationRepository.findById(request.operationId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Operation not found with id: " + request.operationId()));
-            participation.setOperation(operation);
-        } else {
-            throw new IllegalArgumentException("OperationId is required");
+        Participation participation = participationMapper.toEntity(request);
+        participation.setOperation(operation);
+        participation.setScout(scout);
+
+        if (Boolean.TRUE.equals(request.considerStatus())) {
+            scout.setStatus(request.resultStatus());
+        }
+
+        if (Boolean.TRUE.equals(request.countsTowardTotal())) {
+            scout.setTotalMissions(scout.getTotalMissions() + 1);
         }
 
         Participation saved = participationRepository.save(participation);
@@ -60,6 +67,22 @@ public class ParticipationService {
         Participation participation = participationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Participation not found with id: " + id));
 
+        if (participation.getCountsTowardTotal()) {
+            Scout scout = scoutRepository.findById(participation.getScout().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Scout not found"));
+
+            scout.setTotalMissions(scout.getTotalMissions() - 1);
+        }
+
         participationRepository.delete(participation);
+    }
+
+    @Transactional
+    public ParticipationResponse changeParticipationNotes(Long id, ParticipationNotesUpdateRequest request) {
+        Participation participation = participationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Participation not found with id: " + id));
+
+        participation.setNotes(request.notes());
+        return ParticipationResponse.from(participationRepository.save(participation));
     }
 }

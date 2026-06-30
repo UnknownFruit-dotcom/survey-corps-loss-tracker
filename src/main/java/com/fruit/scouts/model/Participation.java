@@ -31,6 +31,9 @@ public class Participation {
     @Column(length = 50, name = "result_status")
     private ScoutStatus resultStatus = ScoutStatus.ACTIVE;
 
+    @Column(name = "counts_toward_total", nullable = false)
+    private Boolean countsTowardTotal = true;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 
