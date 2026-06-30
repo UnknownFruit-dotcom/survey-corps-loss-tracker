@@ -1,6 +1,8 @@
 package com.fruit.scouts.service;
 
 import com.fruit.scouts.dto.request.OperationCreationRequest;
+import com.fruit.scouts.dto.request.OperationStatusUpdateRequest;
+import com.fruit.scouts.dto.request.OperationUpdateRequest;
 import com.fruit.scouts.dto.response.OperationResponse;
 import com.fruit.scouts.exception.ResourceNotFoundException;
 import com.fruit.scouts.mapper.OperationMapper;
@@ -51,5 +53,24 @@ public class OperationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Operation not found with id: " + id));
 
         operationRepository.delete(operation);
+    }
+
+    @Transactional
+    public OperationResponse updateOperation(Long id, OperationUpdateRequest request) {
+        Operation operation = operationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Operation not found with id: " + id));
+
+        operationMapper.updateOperationFromDto(request, operation);
+
+        return OperationResponse.from(operationRepository.save(operation));
+    }
+
+    @Transactional
+    public OperationResponse updateStatus(Long id, OperationStatusUpdateRequest request) {
+        Operation operation = operationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Operation not found with id: " + id));
+
+        operation.setStatus(request.status());
+        return OperationResponse.from(operationRepository.save(operation));
     }
 }

@@ -1,10 +1,11 @@
 package com.fruit.scouts.controller;
 
 import com.fruit.scouts.dto.request.OperationCreationRequest;
+import com.fruit.scouts.dto.request.OperationStatusUpdateRequest;
+import com.fruit.scouts.dto.request.OperationUpdateRequest;
 import com.fruit.scouts.dto.response.OperationResponse;
 import com.fruit.scouts.service.OperationService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +37,19 @@ public class OperationController {
     public ResponseEntity<Void> deleteOperation(@PathVariable Long id) {
         operationService.deleteOperation(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<OperationResponse> updateOperation(
+            @PathVariable Long id,
+            @RequestBody OperationUpdateRequest request) {
+        return ResponseEntity.ok(operationService.updateOperation(id, request));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<OperationResponse> updateStatus(
+            @PathVariable Long id,
+            @RequestBody OperationStatusUpdateRequest request) {
+        return ResponseEntity.ok(operationService.updateStatus(id, request));
     }
 }
