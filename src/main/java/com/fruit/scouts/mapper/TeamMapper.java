@@ -1,10 +1,10 @@
 package com.fruit.scouts.mapper;
 
 import com.fruit.scouts.dto.request.TeamCreationRequest;
+import com.fruit.scouts.dto.request.TeamUpdateRequest;
 import com.fruit.scouts.dto.response.TeamResponse;
 import com.fruit.scouts.model.Team;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -20,4 +20,9 @@ public interface TeamMapper {
     TeamResponse toResponse(Team team);
 
     List<TeamResponse> toResponseList(List<Team> teams);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "leader", ignore = true)
+    @Mapping(target = "members", ignore = true)
+    void updateTeamFromDto(TeamUpdateRequest dto, @MappingTarget Team entity);
 }

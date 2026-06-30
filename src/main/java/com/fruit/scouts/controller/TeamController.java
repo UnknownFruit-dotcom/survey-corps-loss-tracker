@@ -1,6 +1,8 @@
 package com.fruit.scouts.controller;
 
 import com.fruit.scouts.dto.request.TeamCreationRequest;
+import com.fruit.scouts.dto.request.TeamLeaderUpdateRequest;
+import com.fruit.scouts.dto.request.TeamUpdateRequest;
 import com.fruit.scouts.dto.response.TeamResponse;
 import com.fruit.scouts.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +36,19 @@ public class TeamController {
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         teamService.deleteTeam(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TeamResponse> updateTeam(
+            @PathVariable Long id,
+            @RequestBody TeamUpdateRequest request) {
+        return ResponseEntity.ok(teamService.updateTeam(id, request));
+    }
+
+    @PatchMapping("/{id}/leader")
+    public ResponseEntity<TeamResponse> updateLeader(
+            @PathVariable Long id,
+            @RequestBody TeamLeaderUpdateRequest request) {
+        return ResponseEntity.ok(teamService.updateLeader(id, request));
     }
 }
