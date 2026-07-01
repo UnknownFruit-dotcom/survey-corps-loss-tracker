@@ -1,6 +1,6 @@
 package com.fruit.scouts.controller;
 
-import com.fruit.scouts.dto.request.UserCreationRequest;
+import com.fruit.scouts.dto.request.UserRegistrationRequest;
 import com.fruit.scouts.dto.request.UserUpdateRequest;
 import com.fruit.scouts.dto.response.UserResponse;
 import com.fruit.scouts.service.UserService;
@@ -17,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserCreationRequest request) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRegistrationRequest request) {
         return ResponseEntity.ok(userService.createUser(request));
     }
 

@@ -1,6 +1,6 @@
 package com.fruit.scouts.mapper;
 
-import com.fruit.scouts.dto.request.UserCreationRequest;
+import com.fruit.scouts.dto.request.UserRegistrationRequest;
 import com.fruit.scouts.dto.request.UserUpdateRequest;
 import com.fruit.scouts.dto.response.UserResponse;
 import com.fruit.scouts.model.User;
@@ -12,7 +12,7 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "passwordHash", ignore = true)
-    User toEntity(UserCreationRequest request);
+    User toEntity(UserRegistrationRequest request);
 
     UserResponse toResponse(User user);
 
