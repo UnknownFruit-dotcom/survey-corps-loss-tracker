@@ -6,6 +6,7 @@ import com.fruit.scouts.dto.response.UserResponse;
 import com.fruit.scouts.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('COMMANDER')")
 public class UserController {
     private final UserService userService;
 
